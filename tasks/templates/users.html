@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="container">
+        <div class="text-center"><h1>users</h1></div>
+</div>
+
+<table class="table table-striped text-center">
+    <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">username</th>
+          <th scope="col">first name</th>
+          <th scope="col">last name</th>
+          <th scope="col">email</th>
+          <th scope="col">active</th>
+          <th scope="col">superuser</th>
+          <th scope="col">acciones</th>
+    
+        </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+    <tr>
+        <th scope="row">{{user.id}}</th>
+          <td>{{user.username}}</td>
+          <td>{{user.first_name}}</td>
+          <td>{{user.last_name}}</td>
+          <td>{{user.email}}</td>
+          <td>{% if user.is_active == True %} ✅ {% else %} ❌ {% endif %}</td>
+          <td>{% if user.is_superuser == True %} ✅ {% else %} ❌ {% endif %}</td>
+          <td>
+            <div class="container text-center">
+              <div class="row">
+                <div class="col">
+                  <form action="{% url 'user_edit' user.id %}" method="get">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">
+                      Edit
+                    </button>
+                  </form>
+                </div>
+                <div class="col">
+                  <form action="{% url 'delete_user' user.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-danger">
+                      Delete
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </td>
+        {% endfor %}
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}
