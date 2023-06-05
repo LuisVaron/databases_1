@@ -43,10 +43,14 @@ def signup(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def users(request):
+    name = User.__name__
     user = User.objects.all()
+    countU = user.count()
 
     return render(request, 'users.html', {
-        'users': user
+        'users': user,
+        'countU': countU,
+        'name': name
     })
 
 
@@ -88,7 +92,7 @@ def signin(request):
         user = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
 
-        if user is None:
+        if user is None or user.is_active is False:
             return render(request, 'signin.html', {
                 'form': AuthenticationForm,
                 'error': '''<div class="alert alert-danger" role="alert">
@@ -103,3 +107,15 @@ def signin(request):
 @login_required
 def management(request):
     return render(request, 'management.html')
+
+
+def guardar_formulario(request):
+    if request.method == 'POST':
+        # Procesar los datos del formulario
+        nuevo_campo = request.POST.get('nuevoCampo')
+        # Realizar acciones con los datos, como guardarlos en la base de datos
+    
+    
+        print(request.POST)
+        
+    return render(request, 'formulario.html')
