@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8">
+      <a class="btn btn-primary" href="/conductores">Back</a>
+    </div>
+  </div>
+  <div>
+    <h1> user: {{driver_info.driver_id}}</h1>
+  </div>
+</div>
+
+<form method="post">
+  {% csrf_token %}
+  {% autoescape off %}
+  {{error}}
+  {% endautoescape %}
+  {{form.as_p}}
+</form>
+
+
+
+{% endblock %}

@@ -2,9 +2,20 @@
 
 {% block content %}
 
-
-    <h1>HOME</h1>
-    <p> {% lorem 1 b random %} </p>
-
+<section class="card card-body">
+    <div class="container text-center">
+        <div class="row">
+        <div class="col">
+            <h2>models panel</h2>
+            <br>
+            <ul class="list-group">
+                <a href="/vehiculo" class="list-group-item list-group-item-action">Vehiculos</a>
+                <a href="/conductores" class="list-group-item list-group-item-action">Conductores</a>
+                <a href="/viajes" class="list-group-item list-group-item-action">Viajes</a>
+                <a href="/metodos_pago" class="list-group-item list-group-item-action">Metodos de pago</a>
+            </ul>
+        </div>
+    </div>
+</section>
 
 {% endblock %}

@@ -4,7 +4,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import IntegrityError
-from .forms import userForm
+from .models import *
+from .forms import *
 
 # Create your views here.
 
@@ -43,14 +44,12 @@ def signup(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def users(request):
-    name = User.__name__
     user = User.objects.all()
-    countU = user.count()
-
+    campos = {'id':'user_id', 'username': 'username', 'email': 'email'}
+    print(request.POST)
     return render(request, 'users.html', {
         'users': user,
-        'countU': countU,
-        'name': name
+        'campos': campos
     })
 
 
@@ -69,9 +68,8 @@ def user_edit(request, user_id):
 
 
 @login_required
-def delete_user(request, user_id):
+def user_delete(request, user_id):
     user_info = get_object_or_404(User, pk=user_id)
-    print(user_info,'-----------')
     if request.method == 'POST':
         user_info.delete()
         return redirect('users')
@@ -109,13 +107,117 @@ def management(request):
     return render(request, 'management.html')
 
 
-def guardar_formulario(request):
+@login_required
+def vehicle(request):
     if request.method == 'POST':
-        # Procesar los datos del formulario
-        nuevo_campo = request.POST.get('nuevoCampo')
-        # Realizar acciones con los datos, como guardarlos en la base de datos
-    
-    
         print(request.POST)
-        
-    return render(request, 'formulario.html')
+    vehiculos = vehiculo.objects.all()
+    campos = [field.name for field in vehiculo._meta.get_fields()[1:]]
+
+    return render(request, 'vehiculo.html', {
+        'vehiculos': vehiculos,
+        'campos': campos
+    })
+
+
+@login_required
+def vehicle_edit(request, vehicle_id):
+    if request.method == 'GET':
+        vehicle_info = get_object_or_404(vehiculo, pk=vehicle_id)
+        form = vehicleForm(instance=vehicle_info)
+        return render(request, 'vehiculo_edit.html', {'vehicle_info': vehicle_info, 'form': form})
+
+    else:
+            vehicle_info = get_object_or_404(vehiculo, pk=vehicle_id)
+            form = vehicleForm(request.POST, instance=vehicle_info)
+            form.save()
+            return redirect('vehiculo')
+
+
+@login_required
+def vehicle_delete(request, vehicle_id):
+    vehicle_info = get_object_or_404(vehiculo, pk=driver_id)
+    if request.method == 'POST':
+        vehicle_info.delete()
+        return redirect('vehiculo')
+
+
+@login_required
+def conductores(request):
+    driver = conductor.objects.all()
+    campos = [field.name for field in conductor._meta.get_fields()[1:]]
+
+    print(request.POST)
+
+    return render(request, 'conductor.html', {
+        'drivers': driver,
+        'campos': campos
+    })
+
+
+@login_required
+def conductores_edit(request, driver_id):
+    if request.method == 'GET':
+        driver_info = get_object_or_404(conductor, pk=driver_id)
+        form = driverForm(instance=driver_info)
+        return render(request, 'conductor_edit.html', {'driver_info': driver_info, 'form': form})
+
+    else:
+            driver_info = get_object_or_404(conductor, pk=driver_id)
+            form = driverForm(request.POST, instance=driver_info)
+            form.save()
+            return redirect('conductor')
+
+
+@login_required
+def conductores_delete(request, driver_id):
+    driver_info = get_object_or_404(conductor, pk=driver_id)
+    if request.method == 'POST':
+        driver_info.delete()
+        return redirect('conductor')
+
+
+@login_required
+def viajes(request):
+    trips = viaje.objects.all()
+    campos = [field.name for field in viaje._meta.get_fields()[1:]]
+
+    return render(request, 'viajes.html', {
+        'trips': trips,
+        'campos': campos
+    })
+
+
+@login_required
+def viajes_delete(request, trip_id):
+    trip_info = get_object_or_404(viaje, pk=trip_id)
+    if request.method == 'POST':
+        trip_info.delete()
+        return redirect('viajes')
+
+
+@login_required
+def metodos_pago(request):
+    payments = metodoPago.objects.all()
+    campos = [field.name for field in metodoPago._meta.get_fields()[1:]]
+
+    return render(request, 'metodos_pago.html', {
+        'payments': payments,
+        'campos': campos
+    })
+
+    payments = metodoPago.objects.all()
+    campos = [field.name for field in metodoPago._meta.get_fields()[1:]]
+
+    return render(request, 'metodos_pago.html', {
+        'payments': payments,
+        'campos': campos
+    })
+
+
+@login_required
+def metodos_pago_delete(request, payment_id):
+    payment_info = get_object_or_404(metodoPago, pk=payment_id)
+    if request.method == 'POST':
+        payment_info.delete()
+        return redirect('metodos_pago')
