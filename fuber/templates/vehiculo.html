@@ -1,87 +1,100 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <div class="row">
   <div class="col-sm-8">
-      <a class="btn btn-primary" href="/management">volver</a>
+    <a class="btn btn-primary" href="/management">Back</a>
   </div>
 </div>
-<br>
+<br />
 <div class="container">
-        <div class="text-center"><h1>Vehiculos</h1></div>
+  <div class="text-center"><h1>Vehiculos</h1></div>
 </div>
+<br />
 <div class="container">
-
-
-  
-  <form class="row g-4" autocomplete="off" method='post'>
-    {% csrf_token %}
-    <div class="col-auto">
-      <p>filter by:</p>
+  <div class="row">
+    <div class="col-md-auto">
+      <form class="row g-3" autocomplete="off" method="post">
+        {% csrf_token %}
+        <div class="col-auto">
+          <p>filter by:</p>
+        </div>
+        <div class="col-auto">
+          <select
+            name="field"
+            class="form-select"
+            aria-label="Default select example"
+          >
+            {% for campo in campos %}
+            <option value="{{campo}}">{{campo}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-auto">
+          <input name="txtFilter" type="text" class="form-control" value="{{txtFilter}}" />
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-3">filter</button>
+        </div>
+      </form>
     </div>
-    <div class="col-auto">
-      <select name = "field"  class="form-select" aria-label="Default select example">
-        {% for campo in campos %}
-        <option value="{{campo}}">{{campo}}</option>
-        {% endfor %}
-      </select>
+    <div class="col">
+      <form action="{% url 'vehiculo' %}" method="get">
+          <button class="btn btn-danger mb-3">reset</button>
+      </form>
     </div>
-    <div class="col-auto">
-      <input name = "txtFilter" type="text" class="form-control">
-    </div>
-    <div class="col-auto">
-      <button type="submit" class="btn btn-primary mb-3">filter</button>
-    </div>
-  </form>
-
-
-
-
-
-<table class="table table-striped text-center">
+  </div>
+</div>
+  <br />
+  <table class="table table-striped text-center">
     <thead>
-        <tr>
-          <th scope="col">id</th>
-          <th scope="col">marca</th>
-          <th scope="col">color</th>
-          <th scope="col">placa</th>   
-          <th scope="col">descripcion</th>    
-        </tr>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">marca</th>
+        <th scope="col">color</th>
+        <th scope="col">placa</th>
+        <th scope="col">descripcion</th>
+      </tr>
     </thead>
     <tbody>
-    {% for vehiculo in vehiculos %}
-    <tr>
+      {% for vehiculo in vehiculos %}
+      <tr>
         <th scope="row">{{vehiculo.vehicle_id}}</th>
-          <td>{{vehiculo.marca}}</td>
-          <td>{{vehiculo.color}}</td>
-          <td>{{vehiculo.placa}}</td>
-          <td>{{vehiculo.descripcion}}</td>
-          <td>
-            <div class="container text-center">
-              <div class="row">
-                <div class="col">
-                  <form action="{% url 'vehicle_edit' vehiculo.vehicle_id %}" method="get">
-                    {% csrf_token %}
-                    <button class="btn btn-primary">
-                      Edit
-                    </button>
-                  </form>
-                </div>
-                <div class="col">
-                  <form action="{% url 'vehiculo_delete' vehiculo.vehicle_id %}" method="post">
-                    {% csrf_token %}
-                    <button class="btn btn-danger" onclick="return confirmDelete();">
-                      Delete
-                    </button>
-                  </form>
-                </div>
+        <td>{{vehiculo.marca}}</td>
+        <td>{{vehiculo.color}}</td>
+        <td>{{vehiculo.placa}}</td>
+        <td>{{vehiculo.descripcion}}</td>
+        <td>
+          <div class="container text-center">
+            <div class="row">
+              <div class="col">
+                <form
+                  action="{% url 'vehicle_edit' vehiculo.vehicle_id %}"
+                  method="get"
+                >
+                  {% csrf_token %}
+                  <button class="btn btn-primary">Edit</button>
+                </form>
+              </div>
+              <div class="col">
+                <form
+                  action="{% url 'vehiculo_delete' vehiculo.vehicle_id %}"
+                  method="post"
+                >
+                  {% csrf_token %}
+                  <button
+                    class="btn btn-danger"
+                    onclick="return confirmDelete();"
+                  >
+                    Delete
+                  </button>
+                </form>
               </div>
             </div>
-          </td>
+          </div>
+        </td>
         {% endfor %}
-        </tr>
+      </tr>
     </tbody>
-</table>
+  </table>
 
-{% endblock %}
+  {% endblock %}

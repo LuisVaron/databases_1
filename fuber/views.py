@@ -42,45 +42,6 @@ def signup(request):
         })
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def users(request):
-    user = User.objects.all()
-    campos = {'id':'user_id', 'username': 'username', 'email': 'email'}
-    print(request.POST)
-    return render(request, 'users.html', {
-        'users': user,
-        'campos': campos
-    })
-
-
-@user_passes_test(lambda u: u.is_superuser)
-def user_edit(request, user_id):
-    if request.method == 'GET':
-        user_info = get_object_or_404(User, pk=user_id)
-        form = userForm(instance=user_info)
-        return render(request, 'user_edit.html', {'user_info': user_info, 'form': form})
-
-    else:
-            user_info = get_object_or_404(User, pk=user_id)
-            form = userForm(request.POST, instance=user_info)
-            form.save()
-            return redirect('users')
-
-
-@login_required
-def user_delete(request, user_id):
-    user_info = get_object_or_404(User, pk=user_id)
-    if request.method == 'POST':
-        user_info.delete()
-        return redirect('users')
-
-
-@login_required
-def signout(request):
-    logout(request)
-    return redirect('home')
-
-
 def signin(request):
     if request.method == 'GET':
         return render(request, 'signin.html', {
@@ -103,20 +64,72 @@ def signin(request):
 
 
 @login_required
+def signout(request):
+    logout(request)
+    return redirect('home')
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def users(request):
+    if request.method == 'GET':
+        user = User.objects.all()
+        txtFilter = ''
+    else:
+        kwargs = {request.POST['field'] + '__contains': request.POST['txtFilter']}
+        user = User.objects.filter(**kwargs)
+        txtFilter = request.POST['txtFilter']
+
+    campos = ['id', 'username', 'email']
+    return render(request, 'users.html', {
+        'users': user,
+        'campos': campos,
+        'txtFilter': txtFilter
+    })
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def user_edit(request, user_id):
+    if request.method == 'GET':
+        user_info = get_object_or_404(User, pk=user_id)
+        form = userForm(instance=user_info)
+        return render(request, 'user_edit.html', {'user_info': user_info, 'form': form})
+
+    else:
+        user_info = get_object_or_404(User, pk=user_id)
+        form = userForm(request.POST, instance=user_info)
+        form.save()
+        return redirect('users')
+
+
+@login_required
+def user_delete(request, user_id):
+    user_info = get_object_or_404(User, pk=user_id)
+    if request.method == 'POST':
+        user_info.delete()
+        return redirect('users')
+
+
+@login_required
 def management(request):
     return render(request, 'management.html')
 
 
 @login_required
 def vehicle(request):
-    if request.method == 'POST':
-        print(request.POST)
-    vehiculos = vehiculo.objects.all()
-    campos = [field.name for field in vehiculo._meta.get_fields()[1:]]
+    if request.method == 'GET':
+        vehiculos = vehiculo.objects.all()
+        txtFilter = ''
+    else:
+        kwargs = {request.POST['field'] + '__contains': request.POST['txtFilter']}
+        vehiculos = vehiculo.objects.filter(**kwargs)
+        txtFilter = request.POST['txtFilter']
+        
+    campos = ['vehicle_id', 'marca', 'color', 'placa']
 
     return render(request, 'vehiculo.html', {
         'vehiculos': vehiculos,
-        'campos': campos
+        'campos': campos,
+        'txtFilter': txtFilter
     })
 
 
@@ -144,14 +157,23 @@ def vehicle_delete(request, vehicle_id):
 
 @login_required
 def conductores(request):
-    driver = conductor.objects.all()
-    campos = [field.name for field in conductor._meta.get_fields()[1:]]
-
-    print(request.POST)
+    if request.method == 'GET':
+        driver = conductor.objects.all()
+        txtFilter = ''
+    else:
+        if request.POST['field'] == 'placa':
+            kwargs = {'vehicle__placa__contains': request.POST['txtFilter']}
+        else:
+            kwargs = {request.POST['field'] + '__contains': request.POST['txtFilter']}
+        driver = conductor.objects.filter(**kwargs)
+        txtFilter = request.POST['txtFilter']
+        
+    campos = ['driver_id', 'nombre', 'correo', 'placa']
 
     return render(request, 'conductor.html', {
         'drivers': driver,
-        'campos': campos
+        'campos': campos,
+        'txtFilter': txtFilter
     })
 
 
@@ -189,6 +211,20 @@ def viajes(request):
 
 
 @login_required
+def viajes_edit(request, trip_id):
+    if request.method == 'GET':
+        trip_info = get_object_or_404(viaje, pk=trip_id)
+        form = tripForm(instance=trip_info)
+        return render(request, 'viajes_edit.html', {'trip_info': trip_info, 'form': form})
+
+    else:
+            trip_info = get_object_or_404(viaje, pk=trip_id)
+            form = tripForm(request.POST, instance=trip_info)
+            form.save()
+            return redirect('viaje')
+
+
+@login_required
 def viajes_delete(request, trip_id):
     trip_info = get_object_or_404(viaje, pk=trip_id)
     if request.method == 'POST':
@@ -213,6 +249,20 @@ def metodos_pago(request):
         'payments': payments,
         'campos': campos
     })
+
+
+@login_required
+def metodos_pago_edit(request, payment_id):
+    if request.method == 'GET':
+        payment_info = get_object_or_404(metodoPago, pk=payment_id)
+        form = paymentForm(instance=payment_info)
+        return render(request, 'metodos_pago_edit.html', {'payment_info': payment_info, 'form': form})
+
+    else:
+            payment_info = get_object_or_404(viaje, pk=payment_id)
+            form = paymentForm(request.POST, instance=payment_info)
+            form.save()
+            return redirect('viaje')
 
 
 @login_required

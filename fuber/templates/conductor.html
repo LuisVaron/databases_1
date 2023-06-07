@@ -1,92 +1,105 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <div class="row">
   <div class="col-sm-8">
-      <a class="btn btn-primary" href="/management">volver</a>
+    <a class="btn btn-primary" href="/management">Back</a>
   </div>
 </div>
-<br>
+<br />
 <div class="container">
-        <div class="text-center"><h1>Vehiculos</h1></div>
+  <div class="text-center"><h1>Conductores</h1></div>
 </div>
+<br />
+
 <div class="container">
-
-
-  
-
-<form class="row g-4" autocomplete="off" method='post'>
-  {% csrf_token %}
-  <div class="col-auto">
-    <p>filter by:</p>
+  <div class="row">
+    <div class="col-md-auto">
+      <form class="row g-3" autocomplete="off" method="post">
+        {% csrf_token %}
+        <div class="col-auto">
+          <p>filter by:</p>
+        </div>
+        <div class="col-auto">
+          <select
+            name="field"
+            class="form-select"
+            aria-label="Default select example"
+          >
+            {% for campo in campos %}
+            <option value="{{campo}}">{{campo}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-auto">
+          <input name="txtFilter" type="text" class="form-control" value="{{txtFilter}}" />
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-3">filter</button>
+        </div>
+      </form>
+    </div>
+    <div class="col">
+      <form action="{% url 'conductores' %}" method="get">
+          <button class="btn btn-danger mb-3">reset</button>
+      </form>
+    </div>
   </div>
-  <div class="col-auto">
-    <select name = "field"  class="form-select" aria-label="Default select example">
-      {% for campo in campos %}
-      <option value="{{campo}}">{{campo}}</option>
-      {% endfor %}
-    </select>
-  </div>
-  <div class="col-auto">
-    <input name = "txtFilter" type="text" class="form-control">
-  </div>
-  <div class="col-auto">
-    <button type="submit" class="btn btn-primary mb-3">filter</button>
-  </div>
-</form>
-
-
-
-
-
+</div>
+<br />
 <table class="table table-striped text-center">
-    <thead>
-        <tr>
-          <th scope="col">id</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Apellido</th>
-          <th scope="col">Correo</th>   
-          <th scope="col">Telefono</th>    
-          <th scope="col">fechaNacimiento</th>
-          <th scope="col">placa vehiculo</th>
-        </tr>
-    </thead>
-    <tbody>
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Apellido</th>
+      <th scope="col">Correo</th>
+      <th scope="col">Telefono</th>
+      <th scope="col">fechaNacimiento</th>
+      <th scope="col">placa vehiculo</th>
+    </tr>
+  </thead>
+  <tbody>
     {% for driver in drivers %}
     <tr>
-        <th scope="row">{{driver.driver_id}}</th>
-          <td>{{driver.nombre}}</td>
-          <td>{{driver.apellido}}</td>
-          <td>{{driver.correo}}</td>
-          <td>{{driver.telefono}}</td>
-          <td>{{driver.fecha_nacimiento}}</td>
-          <td>{{driver.vehicle.placa}}</td>
-          <td>
-            <div class="container text-center">
-              <div class="row">
-                <div class="col">
-                  <form action="{% url 'conductores_edit' driver.driver_id %}" method="get">
-                    {% csrf_token %}
-                    <button class="btn btn-primary">
-                      Edit
-                    </button>
-                  </form>
-                </div>
-                <div class="col">
-                  <form action="{% url 'conductores_delete' driver.driver_id %}" method="post">
-                    {% csrf_token %}
-                    <button class="btn btn-danger" onclick="return confirmDelete();">
-                      Delete
-                    </button>
-                  </form>
-                </div>
-              </div>
+      <th scope="row">{{driver.driver_id}}</th>
+      <td>{{driver.nombre}}</td>
+      <td>{{driver.apellido}}</td>
+      <td>{{driver.correo}}</td>
+      <td>{{driver.telefono}}</td>
+      <td>{{driver.fecha_nacimiento}}</td>
+      <td>{{driver.vehicle.placa}}</td>
+      <td>
+        <div class="container text-center">
+          <div class="row">
+            <div class="col">
+              <form
+                action="{% url 'conductores_edit' driver.driver_id %}"
+                method="get"
+              >
+                {% csrf_token %}
+                <button class="btn btn-primary">Edit</button>
+              </form>
             </div>
-          </td>
-        {% endfor %}
-        </tr>
-    </tbody>
+            <div class="col">
+              <form
+                action="{% url 'conductores_delete' driver.driver_id %}"
+                method="post"
+              >
+                {% csrf_token %}
+                <button
+                  class="btn btn-danger"
+                  onclick="return confirmDelete();"
+                >
+                  Delete
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </td>
+      {% endfor %}
+    </tr>
+  </tbody>
 </table>
 
 {% endblock %}

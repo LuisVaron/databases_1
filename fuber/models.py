@@ -10,7 +10,7 @@ class vehiculo(models.Model):
     vehicle_id = models.AutoField(primary_key=True)
     marca = models.CharField(max_length=50)
     color = models.CharField(max_length=50)
-    placa = models.CharField(max_length=50)
+    placa = models.CharField(max_length=50, unique=True)
     descripcion = models.CharField(max_length=350)
 
 
