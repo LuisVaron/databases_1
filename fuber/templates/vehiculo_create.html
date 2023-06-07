@@ -10,7 +10,7 @@
   </div>
   <br/>
   <div>
-    <h1> Placa: {{vehicle_info.placa}}</h1>
+    <h1> Nuevo Vehiculo</h1>
   </div>
   <br/>
 </div>
@@ -21,6 +21,19 @@
   {{error}}
   {% endautoescape %}
   <div class="container">
+    <div class="row">
+      <div class="col-md-auto">
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            {{form.placa.label_tag}}
+          </div>
+          <div class="col-auto">
+            {{form.placa}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <br/>
     <div class="row">
       <div class="col-md-auto">
         <div class="row g-3 align-items-center">
@@ -52,7 +65,7 @@
   </div>
   <br/>
   <button class = "btn btn-primary">
-    Update
+    Create
   </button>
 </form>
 

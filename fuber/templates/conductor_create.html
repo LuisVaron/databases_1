@@ -5,120 +5,99 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-8">
-      <a class="btn btn-primary" href="/users">Back</a>
+      <a class="btn btn-primary" href="/conductores">Back</a>
     </div>
   </div>
   <br/>
   <div>
-    <h1> user: {{user_info.username}}</h1>
+    <h1> Conductor: {{driver_info.nombre}} {{driver_info.apellido}}</h1>
   </div>
+  <br/>
 </div>
+
 
 <form method="post" autocomplete="off">
   {% csrf_token %}
   {% autoescape off %}
   {{error}}
   {% endautoescape %}
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            {{form.nombre.label_tag}}
+          </div>
+          <div class="col-auto">
+            {{form.nombre}}
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            {{form.apellido.label_tag}}
+          </div>
+          <div class="col-auto">
+            {{form.apellido}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <br/>
   <div class="container">
     <div class="row">
       <div class="col">
         <div class="row g-3 align-items-center">
           <div class="col-auto">
-            {{form.date_joined.label_tag}}
+            {{form.correo.label_tag}}
           </div>
           <div class="col-auto">
-            {{form.date_joined}}
+            {{form.correo}}
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            {{form.telefono.label_tag}}
+          </div>
+          <div class="col-auto">
+            {{form.telefono}}
           </div>
         </div>
       </div>
     </div>
-    <br/>
-    <div class="row">
-      <div class="col">
-        <div class="row g-3 align-items-center">
-          <div class="col-auto">
-            {{form.last_login.label_tag}}
-          </div>
-          <div class="col-auto">
-            {{form.last_login}}
-          </div>
-        </div>
-      </div>
-    </div>
-    <br/>
-    <div class="row">
-      <div class="col">
-        <div class="row g-3 align-items-center">
-          <div class="col-auto">
-            {{form.first_name.label_tag}}
-          </div>
-          <div class="col-auto">
-            {{form.first_name}}
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="row g-3 align-items-center">
-          <div class="col-auto">
-            {{form.last_name.label_tag}}
-          </div>
-          <div class="col-auto">
-            {{form.last_name}}
-          </div>
-        </div>
-      </div>
-    </div>
-    <br/>
-    <div class="row">
-      <div class="col">
-        <div class="row g-3 align-items-center">
-          <div class="col-auto">
-            {{form.username.label_tag}}
-          </div>
-          <div class="col-auto">
-            {{form.username}}
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="row g-3 align-items-center">
-          <div class="col-auto">
-            {{form.email.label_tag}}
-          </div>
-          <div class="col-auto">
-            {{form.email}}
-          </div>
-        </div>
-      </div>
-    </div>
-    <br/>
-    <div class="row">
-      <div class="col">
-        <div class="row g-3 align-items-center">
-          <div class="col-auto">
-            {{form.is_active.label_tag}} {{form.is_active}}
-          </div>
-        </div>
-      </div>
-    </div>
-    <br/>
-    <div class="row">
-      <div class="col">
-        <div class="row g-3 align-items-center">
-          <div class="col-auto">
-            {{form.is_superuser.label_tag}} {{form.is_superuser}}
-          </div>
-        </div>
-      </div>
-    </div>
-    <br/>
-    {{form.payment_method.label_tag}}
-    {{form.payment_method}}
-    <br/>
   </div>
+  <br/>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            {{form.fecha_nacimiento.label_tag}}
+          </div>
+          <div class="col-auto">
+            {{form.fecha_nacimiento}}
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            {{form.vehicle.label_tag}}
+          </div>
+          <div class="col-auto">
+            {{form.vehicle}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
   <button class = "btn btn-primary">
-    Update
+    Create
   </button>
 </form>
 

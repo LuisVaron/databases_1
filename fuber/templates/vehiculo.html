@@ -12,7 +12,7 @@
 <br />
 <div class="container">
   <div class="row">
-    <div class="col-md-auto">
+    <div class="col">
       <form class="row g-3" autocomplete="off" method="post">
         {% csrf_token %}
         <div class="col-auto">
@@ -30,16 +30,26 @@
           </select>
         </div>
         <div class="col-auto">
-          <input name="txtFilter" type="text" class="form-control" value="{{txtFilter}}" />
+          <input
+            name="txtFilter"
+            type="text"
+            class="form-control"
+            value="{{txtFilter}}"
+          />
         </div>
         <div class="col-auto">
           <button type="submit" class="btn btn-primary mb-3">filter</button>
         </div>
       </form>
     </div>
-    <div class="col">
+    <div class="col-md-auto">
       <form action="{% url 'vehiculo' %}" method="get">
-          <button class="btn btn-danger mb-3">reset</button>
+        <button class="btn btn-danger mb-3">reset</button>
+      </form>
+    </div>
+    <div class="col col-lg-2">
+      <form action="{% url 'vehiculo_create' %}" method="get">
+        <button class="btn btn-success mb-3">add vehicle +</button>
       </form>
     </div>
   </div>
@@ -53,6 +63,7 @@
         <th scope="col">color</th>
         <th scope="col">placa</th>
         <th scope="col">descripcion</th>
+        <th scope="col">acciones</th>
       </tr>
     </thead>
     <tbody>

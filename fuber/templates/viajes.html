@@ -10,30 +10,51 @@
   <div class="text-center"><h1>Viajes</h1></div>
 </div>
 <br />
+
 <div class="container">
-  <form class="row g-4" autocomplete="off" method="post">
-    {% csrf_token %}
-    <div class="col-auto">
-      <p>filter by:</p>
+  <div class="row">
+    <div class="col">
+      <form class="row g-3" autocomplete="off" method="post">
+        {% csrf_token %}
+        <div class="col-auto">
+          <p>filter by:</p>
+        </div>
+        <div class="col-auto">
+          <select
+            name="field"
+            class="form-select"
+            aria-label="Default select example"
+          >
+            {% for campo in campos %}
+            <option value="{{campo}}">{{campo}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-auto">
+          <input
+            name="txtFilter"
+            type="text"
+            class="form-control"
+            value="{{txtFilter}}"
+          />
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-3">filter</button>
+        </div>
+      </form>
     </div>
-    <div class="col-auto">
-      <select
-        name="field"
-        class="form-select"
-        aria-label="Default select example"
-      >
-        {% for campo in campos %}
-        <option value="{{campo}}">{{campo}}</option>
-        {% endfor %}
-      </select>
+    <div class="col-md-auto">
+      <form action="{% url 'viajes' %}" method="get">
+        <button class="btn btn-danger mb-3">reset</button>
+      </form>
     </div>
-    <div class="col-auto">
-      <input name="txtFilter" type="text" class="form-control" />
+    <div class="col col-lg-2">
+      <form action="{% url 'viajes_create' %}" method="get">
+        <button class="btn btn-success mb-3">add trip +</button>
+      </form>
     </div>
-    <div class="col-auto">
-      <button type="submit" class="btn btn-primary mb-3">filter</button>
-    </div>
-  </form>
+  </div>
+</div>
   <br />
   <table class="table table-striped text-center">
     <thead>
@@ -44,6 +65,7 @@
         <th scope="col">Origen</th>
         <th scope="col">Destino</th>
         <th scope="col">fecha Viaje</th>
+        <th scope="col">acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -90,4 +112,3 @@
   </table>
 
   {% endblock %}
-</div>
